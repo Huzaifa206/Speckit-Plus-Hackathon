@@ -1,55 +1,81 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- SYNC IMPACT REPORT
+Version change: N/A -> 1.0.0
+Modified principles: N/A (new constitution)
+Added sections: Vision, Core Principles (6), Success Criteria, Constraints, Stakeholders, Brand Voice
+Removed sections: N/A
+Templates requiring updates:
+- .specify/templates/plan-template.md: ✅ updated
+- .specify/templates/spec-template.md: ✅ updated
+- .specify/templates/tasks-template.md: ✅ updated
+- .specify/templates/commands/*.md: ✅ reviewed
+Follow-up TODOs: None
+-->
+
+# Physical AI & Humanoid Robotics: From Digital Intelligence to Embodied Machines Constitution
+
+## Vision
+
+The goal of this educational resource is to teach embodied intelligence and Physical AI by providing a comprehensive learning path that transitions students from digital AI concepts to robots operating in real-world physics. We aim to bridge the gap between theoretical AI models and practical robotic systems, enabling learners to understand how artificial intelligence becomes embodied in physical machines that interact with the real world.
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### Simulation-First, Hardware-Second
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+All development and testing begins in simulation environments before any hardware deployment. Every robotic system must be validated in Gazebo and Isaac Sim before considering real hardware. This approach reduces costs, increases safety, and accelerates iteration cycles while maintaining the same fundamental behaviors and interfaces that will be used with physical robots.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### AI + Robotics Convergence
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Physical AI systems must seamlessly integrate artificial intelligence with robotic control systems. Every implementation combines perception, planning, and action in a unified architecture. AI models must be designed with embodied constraints in mind, and robotic systems must be designed to leverage AI capabilities effectively.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### Human-Centered Humanoid Design
 
-### [PRINCIPLE_6_NAME]
+Humanoid robotics development must prioritize human-like interaction patterns and anthropomorphic design principles. All humanoid behaviors should consider human ergonomics, social interaction norms, and intuitive response patterns. The design must enable natural human-robot interaction and cooperation.
 
+### Progressive Complexity
 
-[PRINCIPLE__DESCRIPTION]
+Learning materials must follow a carefully structured progression from simple concepts to complex integrated systems. Each module builds upon previous knowledge with increasing complexity, ensuring learners master foundational concepts before advancing. Every new concept introduces only one major new element while reinforcing existing knowledge.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### Industry-Grade Tooling
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+All examples and exercises must use professional-grade tools and frameworks that match industry standards. ROS 2, Isaac Sim, and production-level AI frameworks must be the primary development environment. This ensures learners develop skills directly applicable to professional robotics development.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### Learn by Building
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Every concept must result in tangible, executable code that produces visible results. Students must create simulations, ROS nodes, and visual/physical behaviors as part of each learning module. Theoretical knowledge is validated through practical implementation and demonstration.
+
+## Success Criteria
+
+- Learners can build and deploy ROS 2 packages for humanoid robotics applications
+- Learners can simulate and control humanoids in Gazebo and Isaac Sim environments
+- Learners can integrate perception, planning, and action systems into cohesive robotic behaviors
+- Learners can implement complete systems supporting Voice → Plan → Navigate → Manipulate workflows
+- Learners can deploy AI models for vision-language-action tasks on robotic platforms
+
+## Constraints
+
+- High computational requirements: Realistic simulation requires significant GPU resources
+- RTX GPU dependency: NVIDIA Isaac ecosystem requires CUDA-capable hardware
+- Linux-first development workflow: Primary tooling optimized for Ubuntu/ROS 2 environment
+- Real robot deployment optional: Content designed for simulation-first learning with hardware as advanced option
+- Complex toolchain: Multiple interconnected systems require careful environment setup
+
+## Stakeholders
+
+- Students: Learners transitioning from AI to robotics or starting with humanoid systems
+- Robotics educators: Instructors implementing curriculum for robotics courses
+- AI engineers: Developers seeking to apply AI skills to physical systems
+- Research labs: Academic and industrial teams exploring humanoid robotics
+- Startup founders: Entrepreneurs building robotics products and applications
+
+## Brand Voice
+
+- Technical but beginner-friendly: Complex concepts explained with accessible analogies and clear examples
+- Confident, futuristic, and precise: Forward-looking perspective with exact technical specifications
+- Visually rich and engineering-focused: Heavy use of diagrams, simulations, and visual demonstrations
+- No fluff, no hype—only real systems: Practical, implementable solutions without marketing language
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution governs all content creation, curriculum design, and technology decisions for the "Physical AI & Humanoid Robotics" educational resource. All new content must align with these principles. Amendments require documentation of rationale and approval by the core development team. All examples and exercises must demonstrate compliance with these principles.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-01-06 | **Last Amended**: 2026-01-06

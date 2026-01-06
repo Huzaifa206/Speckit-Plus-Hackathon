@@ -1,0 +1,281 @@
+openapi: 3.0.0
+info:
+  title: Physical AI & Humanoid Robotics Education Platform API
+  description: API for educational content management and learner progress tracking
+  version: 1.0.0
+  contact:
+    name: Education Platform Team
+    email: education@physical-ai-robotics.org
+
+servers:
+  - url: https://api.physical-ai-robotics.com/v1
+    description: Production server
+
+paths:
+  /lessons:
+    get:
+      summary: Get all lessons
+      description: Retrieve a list of all available lessons
+      parameters:
+        - name: chapterId
+          in: query
+          description: Filter lessons by chapter ID
+          required: false
+          schema:
+            type: string
+        - name: skillLevel
+          in: query
+          description: Filter lessons by skill level
+          required: false
+          schema:
+            type: string
+            enum: [beginner, intermediate, advanced]
+      responses:
+        '200':
+          description: List of lessons
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lessons:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Lesson'
+        '400':
+          description: Invalid parameters
+
+  /lessons/{lessonId}:
+    get:
+      summary: Get lesson by ID
+      description: Retrieve a specific lesson by its ID
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          description: Unique identifier of the lesson
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lesson details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+        '404':
+          description: Lesson not found
+
+  /chapters:
+    get:
+      summary: Get all chapters
+      description: Retrieve a list of all available chapters
+      responses:
+        '200':
+          description: List of chapters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chapters:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Chapter'
+
+  /learners/{learnerId}/progress:
+    get:
+      summary: Get learner progress
+      description: Retrieve progress information for a specific learner
+      parameters:
+        - name: learnerId
+          in: path
+          required: true
+          description: Unique identifier of the learner
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Learner progress details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearnerProgress'
+    post:
+      summary: Update learner progress
+      description: Update progress for a specific lesson
+      parameters:
+        - name: learnerId
+          in: path
+          required: true
+          description: Unique identifier of the learner
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lessonId:
+                  type: string
+                  description: ID of the lesson being updated
+                status:
+                  type: string
+                  enum: [not-started, in-progress, completed]
+                  description: New status of the lesson
+                assessmentScore:
+                  type: number
+                  minimum: 0
+                  maximum: 100
+                  description: Score from assessment (if applicable)
+      responses:
+        '200':
+          description: Progress updated successfully
+        '400':
+          description: Invalid progress data
+        '404':
+          description: Learner or lesson not found
+
+components:
+  schemas:
+    Lesson:
+      type: object
+      required:
+        - id
+        - title
+        - content
+        - prerequisites
+        - objectives
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the lesson
+        title:
+          type: string
+          description: Title of the lesson
+        description:
+          type: string
+          description: Brief description of the lesson
+        content:
+          type: string
+          description: MDX content of the lesson
+        prerequisites:
+          type: array
+          items:
+            type: string
+          description: Required knowledge before starting this lesson
+        objectives:
+          type: array
+          items:
+            type: string
+          description: Learning objectives of this lesson
+        handsOnLab:
+          type: object
+          description: Hands-on lab instructions
+          properties:
+            instructions:
+              type: string
+              description: Step-by-step lab instructions
+            requirements:
+              type: array
+              items:
+                type: string
+              description: System requirements for the lab
+        simulationResults:
+          type: string
+          description: Expected simulation outcomes
+        commonErrors:
+          type: array
+          items:
+            type: object
+            properties:
+              error:
+                type: string
+                description: Description of the error
+              solution:
+                type: string
+                description: How to resolve the error
+        industryNotes:
+          type: array
+          items:
+            type: string
+          description: Real-world applications of the concepts
+        miniChallenge:
+          type: object
+          description: Mini challenge at the end of the lesson
+          properties:
+            description:
+              type: string
+              description: Description of the challenge
+            criteria:
+              type: array
+              items:
+                type: string
+              description: Success criteria for the challenge
+        summary:
+          type: string
+          description: Key takeaways from the lesson
+        estimatedTime:
+          type: integer
+          description: Estimated time to complete in minutes
+
+    Chapter:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - lessons
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the chapter
+        title:
+          type: string
+          description: Title of the chapter
+        description:
+          type: string
+          description: Overview of the chapter
+        lessons:
+          type: array
+          items:
+            type: string
+          description: IDs of lessons in this chapter
+        theme:
+          type: string
+          description: Main theme of the chapter
+        progressionLevel:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Complexity level (1-5)
+        estimatedTime:
+          type: integer
+          description: Total estimated time to complete in minutes
+
+    LearnerProgress:
+      type: object
+      properties:
+        learnerId:
+          type: string
+          description: Unique identifier of the learner
+        completedLessons:
+          type: array
+          items:
+            type: string
+          description: IDs of completed lessons
+        inProgressLessons:
+          type: array
+          items:
+            type: string
+          description: IDs of lessons in progress
+        overallProgress:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Overall progress percentage
+        recommendedNext:
+          type: string
+          description: Recommended next lesson based on progress
