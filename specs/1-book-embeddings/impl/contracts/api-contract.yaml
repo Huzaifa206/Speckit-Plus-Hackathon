@@ -1,0 +1,224 @@
+# API Contract: Book Content Embeddings Backend
+
+**Feature**: 1-book-embeddings
+**Created**: 2026-01-07
+**Status**: Draft
+**Version**: 1.0.0
+
+## Overview
+
+This contract defines the API for the book content embeddings backend system. The system provides functionality to crawl Docusaurus documentation sites, process the content, generate embeddings using Cohere models, and store them in Qdrant for retrieval.
+
+## Base URL
+
+`http://localhost:8000` (development)
+`https://api.book-embeddings.example.com` (production)
+
+## Endpoints
+
+### Crawler Service
+
+#### GET /api/v1/crawl/{url}
+
+Crawls a Docusaurus URL and extracts clean content.
+
+**Path Parameters:**
+- `url` (string, required): URL-encoded Docusaurus page URL to crawl
+
+**Query Parameters:**
+- `include_subpages` (boolean, optional): Whether to crawl linked subpages (default: false)
+
+**Response Codes:**
+- `200 OK`: Successfully crawled content
+- `400 Bad Request`: Invalid URL format
+- `404 Not Found`: URL not accessible
+- `500 Internal Server Error`: Processing error
+
+**Response Body (200 OK):**
+```json
+{
+  "url": "string",
+  "title": "string",
+  "content": "string",
+  "word_count": "integer",
+  "processing_time": "number",
+  "subpages_crawled": "integer"
+}
+```
+
+### Text Processing Service
+
+#### POST /api/v1/chunk
+
+Chunks text content into smaller segments for embedding.
+
+**Request Body:**
+```json
+{
+  "content": "string",
+  "chunk_size": "integer",
+  "chunk_overlap": "integer",
+  "preserve_paragraphs": "boolean"
+}
+```
+
+**Response Codes:**
+- `200 OK`: Successfully chunked content
+- `400 Bad Request`: Invalid request parameters
+- `500 Internal Server Error`: Processing error
+
+**Response Body (200 OK):**
+```json
+{
+  "chunks": [
+    {
+      "id": "string",
+      "content": "string",
+      "index": "integer",
+      "token_count": "integer"
+    }
+  ],
+  "total_chunks": "integer",
+  "processing_time": "number"
+}
+```
+
+### Embedding Service
+
+#### POST /api/v1/embed
+
+Generates embeddings for text chunks using Cohere models.
+
+**Request Body:**
+```json
+{
+  "texts": ["string"],
+  "model": "string"
+}
+```
+
+**Response Codes:**
+- `200 OK`: Successfully generated embeddings
+- `400 Bad Request`: Invalid request parameters
+- `429 Too Many Requests`: Rate limit exceeded
+- `500 Internal Server Error`: Processing error
+
+**Response Body (200 OK):**
+```json
+{
+  "embeddings": [
+    {
+      "id": "string",
+      "vector": ["number"],
+      "input_text": "string",
+      "model": "string"
+    }
+  ],
+  "model": "string",
+  "dimensions": "integer",
+  "processing_time": "number"
+}
+```
+
+### Storage Service
+
+#### POST /api/v1/store
+
+Stores embeddings in Qdrant vector database.
+
+**Request Body:**
+```json
+{
+  "embeddings": [
+    {
+      "vector": ["number"],
+      "payload": {
+        "content": "string",
+        "document_url": "string",
+        "document_title": "string",
+        "chunk_index": "integer"
+      }
+    }
+  ],
+  "collection_name": "string"
+}
+```
+
+**Response Codes:**
+- `200 OK`: Successfully stored embeddings
+- `400 Bad Request`: Invalid request parameters
+- `500 Internal Server Error`: Storage error
+
+**Response Body (200 OK):**
+```json
+{
+  "stored_count": "integer",
+  "collection_name": "string",
+  "processing_time": "number"
+}
+```
+
+### Pipeline Service
+
+#### POST /api/v1/pipeline/run
+
+Executes the complete pipeline: crawl → chunk → embed → store.
+
+**Request Body:**
+```json
+{
+  "source_url": "string",
+  "collection_name": "string",
+  "chunk_size": "integer",
+  "chunk_overlap": "integer",
+  "embedding_model": "string"
+}
+```
+
+**Response Codes:**
+- `200 OK`: Successfully completed pipeline
+- `400 Bad Request`: Invalid request parameters
+- `500 Internal Server Error`: Processing error
+
+**Response Body (200 OK):**
+```json
+{
+  "status": "completed",
+  "documents_processed": "integer",
+  "chunks_created": "integer",
+  "embeddings_stored": "integer",
+  "total_processing_time": "number",
+  "collection_name": "string"
+}
+```
+
+## Error Responses
+
+All error responses follow this structure:
+
+```json
+{
+  "error": {
+    "code": "string",
+    "message": "string",
+    "details": "object"
+  }
+}
+```
+
+## Common Headers
+
+- `Authorization: Bearer {token}` (for protected endpoints)
+- `Content-Type: application/json`
+- `Accept: application/json`
+
+## Configuration
+
+### Environment Variables
+
+- `COHERE_API_KEY`: API key for Cohere services
+- `QDRANT_URL`: URL for Qdrant instance
+- `QDRANT_API_KEY`: API key for Qdrant instance
+- `DEFAULT_EMBEDDING_MODEL`: Default model for embeddings (default: "multilingual-22-12")
+- `DEFAULT_CHUNK_SIZE`: Default chunk size (default: 300)
+- `DEFAULT_CHUNK_OVERLAP`: Default chunk overlap (default: 50)

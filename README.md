@@ -105,4 +105,38 @@ If you want to inspect the AI-generated code:
 
 ---
 
+## 📦 Backend Usage: Book Content Embeddings
+
+The backend system for crawling Docusaurus sites, generating embeddings, and storing them in Qdrant.
+
+### Prerequisites
+- Python 3.8 or higher
+- A Cohere API key
+- A Qdrant Cloud account and API key
+
+### Installation
+1. Navigate to the `backend` directory
+2. Install dependencies using uv:
+```bash
+cd backend
+uv pip install -e .
+```
+
+### Configuration
+Set up environment variables in a `.env` file:
+- `COHERE_API_KEY`: Your Cohere API key
+- `QDRANT_URL`: Your Qdrant Cloud instance URL
+- `QDRANT_API_KEY`: Your Qdrant API key
+- `DOCS_URL`: The Docusaurus documentation site URL to process (default: `https://example-docusaurus-site.com`)
+
+### Usage
+Run the pipeline using the CLI:
+```bash
+python -m cli --docs-url https://your-docusaurus-site.com
+```
+
+For more detailed usage instructions, see the [backend documentation](backend/docs/usage.md).
+
+---
+
 *Generated with ❤️ by Human Intent + Machine Intelligence.*
