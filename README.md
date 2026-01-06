@@ -1,4 +1,4 @@
-deploy : https://speckit-plus-hackathon-5m97lel5z-huzaifa206s-projects.vercel.app/
+deploy : https://speckit-plus-hackathon-phi.vercel.app/
 
 # 🤖 Physical AI & Humanoid Robotics: The Agentic Textbook
 
